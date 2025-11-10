@@ -1,0 +1,153 @@
+* { box-sizing: border-box; }
+body { font-family: Arial, Helvetica, sans-serif; margin: 20px; background: #f5f7fb; color: #111; }
+.app { max-width: 980px; margin: 0 auto; }
+h1 { text-align: center; margin-bottom: 20px }
+.board { border: 4px solid #073763; border-radius: 6px; overflow: hidden; }
+.header-row { display: grid; grid-template-columns: repeat(5, 1fr); background: #073763; color: #fff; }
+.category { padding: 14px; text-align: center; font-weight: 700; border-right: 1px solid rgba(255,255,255,0.08); }
+.row { display: grid; grid-template-columns: repeat(5, 1fr); }
+.cell { border-right: 1px solid rgba(0,0,0,0.06); border-bottom: 1px solid rgba(0,0,0,0.06); background: #0b63b7; display: flex; align-items: center; justify-content: center; height: 90px; }
+.tile { background: transparent; color: #fff; font-size: 20px; font-weight: 700; border: none; cursor: pointer; }
+.tile:hover { transform: scale(1.04); }
+.used { background: #d9d9d9; }
+.used-label { color: #666; font-size: 24px; }
+.rules { margin-top: 18px; padding: 12px; background: #fff; border-radius: 6px; }
+.rules h2 { margin-top: 0 }
+
+.teams-section { margin-top: 18px; padding: 12px; background: #fff; border-radius: 6px; }
+.teams { display: flex; gap: 12px; flex-wrap: wrap; }
+.team-box { background: #eef6ff; border: 1px solid #cfe6ff; padding: 10px; border-radius: 6px; width: 160px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.team-name { font-weight: 700; cursor: pointer; }
+.team-name input { font-weight: 700; font-size: 14px; padding: 4px; width: 120px; }
+.team-score { font-size: 20px; font-weight: 800; }
+.team-controls button { margin: 0 4px; padding: 6px 8px; border-radius: 4px; border: 1px solid #bbb; background: #fff; cursor: pointer; }
+.no-teams { color: #666; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 40; }
+.modal { background: #fff; padding: 18px; border-radius: 8px; width: 640px; max-width: calc(100% - 40px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+.question { font-size: 18px; margin: 12px 0; }
+.answer { margin-top: 12px; padding: 10px; background: #f2f7ff; border-radius: 6px; }
+.timer-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.timer { font-weight: 700; }
+.timer.timeout { color: #b00020; }
+.modal-buttons button { margin-left: 8px; }
+.reveal { background: #073763; color: #fff; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
+.close { background: #eee; border: 1px solid #ccc; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
+@media (max-width: 720px) {
+  .cell { height: 70px; }
+  .modal { width: 92%; }
+}
+
+/* --- Rubik 80s Fade font class (from user) --- */
+.sixtyfour-disco {
+  /* Sixtyfour font variable style */
+  font-family: "Sixtyfour", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "BLED" 10, "SCAN" -30;
+}
+
+/* --- Disco theme styling --- */
+/* Use public/bg.png as the full-page background (cover) */
+body {
+  background: url('/bg.png') center center / cover no-repeat;
+  color: #eaeef6;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 20px;
+  position: relative; /* create stacking context for the dark overlay */
+}
+
+/* darken the background with a full-page translucent overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7); /* adjust opacity here to taste (0.0 - 1.0) */
+  pointer-events: none;
+  z-index: 0;
+}
+.app { filter: drop-shadow(0 6px 18px rgba(0,0,0,0.6)); position: relative; z-index: 1; }
+.disco-title { font-size: 48px; letter-spacing: 2px; color: #ffdfa1; text-shadow: 0 2px 0 #b769ff, 0 6px 18px rgba(0,0,0,0.6), 0 0 18px rgba(255,223,161,0.25); margin-bottom: 8px; }
+
+/* disco ball in header */
+.app::before {
+  content: "";
+  position: absolute;
+  right: -10vw;
+  top: -2vh;
+  width: 10vw;
+  aspect-ratio: 1;
+  height: auto;
+  border-radius: 50%;
+  /* use animated GIF from public folder for the disco ball */
+  background: url('/discoball.gif') center center / contain no-repeat;
+  opacity: 1;
+  box-shadow: 0 6px 24px rgba(128,0,255,0.18), inset 0 -8px 18px rgba(0,0,0,0.3);
+  transform-origin: center center;
+  transform-style: flat;
+  backface-visibility: hidden;
+  will-change: transform;
+  transform: rotateZ(0deg);
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* second disco ball as a real DOM node */
+.disco-ball {
+  position: absolute;
+  left: -10vw;
+  top: -2vh;
+  width: 10vw;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  /* use animated GIF from public folder for the disco ball */
+  background: url('/discoball.gif') center center / contain no-repeat;
+  opacity: 1;
+  box-shadow: 0 6px 24px rgba(128,0,255,0.18), inset 0 -8px 18px rgba(0,0,0,0.3);
+  transform-origin: center center;
+  transform-style: flat;
+  backface-visibility: hidden;
+  will-change: transform;
+  transform: rotateZ(0deg);
+  z-index: 5;
+  pointer-events: none;
+}
+
+
+/* board tweaks */
+.board { border: 6px solid rgba(255,255,255,0.06); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding: 6px; border-radius: 10px; }
+.header-row .category { background: linear-gradient(90deg, #4b2a7a, #0b63b7); background-clip: padding-box; border-radius: 6px; box-shadow: 0 6px 18px rgba(75,42,122,0.18) inset; }
+.cell { background: linear-gradient(180deg, #0c4fa0, #073763); border-radius: 8px; margin: 6px; height: 84px; display:flex; align-items:center; justify-content:center; }
+.row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.tile { background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); padding: 8px 18px; border-radius: 8px; color: #fff; font-size: 20px; font-weight: 900; border: 2px solid rgba(255,255,255,0.06); box-shadow: 0 6px 18px rgba(11,54,115,0.28); }
+.tile:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 14px 36px rgba(11,54,115,0.42); }
+.used { background: linear-gradient(180deg, #2b2b2b, #151515); color: #bbb; display:flex; align-items:center; justify-content:center; }
+.used-label { font-size: 28px; color: #ffeedd; }
+
+/* shimmer on question modal */
+.modal { border: 2px solid rgba(255,255,255,0.08); background: linear-gradient(180deg, rgba(8,6,20,0.95), rgba(20,12,40,0.98)); color: #fff; }
+.question { color: #ffd7a6; font-size: 20px; }
+.answer { background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.04); }
+
+/* teams disco look */
+.teams-section { background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04)); border: 1px solid rgba(255,255,255,0.03); }
+.team-box { background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,216,0,0.06)); border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 6px 16px rgba(255,183,77,0.06); }
+.team-score { color: #ffefb7; text-shadow: 0 2px 10px rgba(255,187,51,0.12); }
+
+/* subtle animated sparkles */
+.app::after {
+  content: "";
+  position: fixed;
+  left: 0; top: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 2px);
+  background-size: 120px 120px;
+  mix-blend-mode: screen;
+  opacity: 0.6;
+}
+
+/* small responsive adjustments */
+@media (max-width: 900px) {
+  .disco-title { font-size: 36px; }
+  .team-box { width: 140px; }
+}
