@@ -2,53 +2,63 @@ import React, { useEffect, useRef, useState } from 'react'
 
 const DATA = [
   {
-    category: 'Science',
+    category: 'Electronics Basics',
     clues: [
-      { value: 100, q: 'What planet is known as the Red Planet?', a: 'Mars' },
-      { value: 200, q: 'What gas do plants absorb from the atmosphere?', a: 'Carbon dioxide' },
-      { value: 300, q: 'What is the chemical symbol for water?', a: 'H2O' },
-      { value: 400, q: 'What force keeps us on the ground?', a: 'Gravity' },
-      { value: 500, q: 'What branch of science studies living organisms?', a: 'Biology' }
+      { value: 100, q: 'Stores electrical charge.', a: 'Capacitor' },
+      { value: 200, q: 'Total voltage around a closed loop equals sum of drops.', a: 'Kirchhoff\'s Voltage Law (KVL)' },
+      { value: 300, q: 'Capacitors in series result in total capacitance becoming less than smallest.', a: 'Reciprocal formula (1/Ct = 1/C1 + 1/C2...)' },
+      { value: 400, q: 'The part of a MOSFET that controls flow.', a: 'Gate' },
+      { value: 500, q: 'Opposition to voltage or current change in AC circuits.', a: 'Reactance' }
     ]
   },
   {
-    category: 'History',
+    category: 'Microcontrollers & Boards',
     clues: [
-      { value: 100, q: 'Who was the first President of the United States?', a: 'George Washington' },
-      { value: 200, q: 'In which year did the Titanic sink?', a: '1912' },
-      { value: 300, q: 'Which empire was ruled by Julius Caesar?', a: 'Roman Empire' },
-      { value: 400, q: 'The fall of the Berlin Wall happened in which year?', a: '1989' },
-      { value: 500, q: 'Who was known as the Maid of Orléans?', a: 'Joan of Arc' }
+      { value: 100, q: 'Arduino boards are programmed using this.', a: 'Arduino C/C++' },
+      { value: 200, q: 'ESP32 runs on this CPU architecture.', a: 'Xtensa LX6' },
+      { value: 300, q: 'Pin used on ESP32-CAM to enter flashing mode.', a: 'GPIO0' },
+      { value: 400, q: 'Raspberry Pi GPIO operates at this logic level.', a: '3.3V' },
+      { value: 500, q: 'Single program running directly without OS is called this model.', a: 'Bare-metal programming' }
     ]
   },
   {
-    category: 'Literature',
+    category: 'Sensors & Inputs',
     clues: [
-      { value: 100, q: 'Who wrote "Romeo and Juliet"?', a: 'William Shakespeare' },
-      { value: 200, q: 'What is the novel about a whale, by Herman Melville?', a: 'Moby-Dick' },
-      { value: 300, q: 'Which novel features Atticus Finch?', a: 'To Kill a Mockingbird' },
-      { value: 400, q: 'Who wrote "1984"?', a: 'George Orwell' },
-      { value: 500, q: 'Who is the author of "The Divine Comedy"?', a: 'Dante Alighieri' }
+      { value: 100, q: 'Detects light intensity.', a: 'LDR' },
+      { value: 200, q: 'Ultrasonic sensors are inaccurate on soft surfaces because sound waves do this.', a: 'Get absorbed' },
+      { value: 300, q: 'PIR detects sudden changes in this.', a: 'Infrared radiation' },
+      { value: 400, q: 'Sensor with accelerometer + gyroscope.', a: 'MPU6050' },
+      { value: 500, q: 'Required when two I²C devices share same address.', a: 'I²C multiplexer' }
     ]
   },
   {
-    category: 'Sports',
+    category: 'Networking & IoT',
     clues: [
-      { value: 100, q: 'How many players are on a soccer team (on the field)?', a: '11' },
-      { value: 200, q: 'In which sport would you perform a slam dunk?', a: 'Basketball' },
-      { value: 300, q: 'Which country hosted the 2016 Summer Olympics?', a: 'Brazil' },
-      { value: 400, q: 'How many holes are there in a full round of golf?', a: '18' },
-      { value: 500, q: 'What is the term for three strikes in bowling?', a: 'Turkey' }
+      { value: 100, q: 'IoT stands for this.', a: 'Internet of Things' },
+      { value: 200, q: 'MQTT QoS level ensuring exact once delivery.', a: 'QoS 2' },
+      { value: 300, q: 'IPv6 uses this many bits.', a: '128 bits' },
+      { value: 400, q: 'MQTT keeps connection open using this mechanism.', a: 'Persistent TCP connection' },
+      { value: 500, q: 'LoRa long-range tradeoff parameter lost when range increases.', a: 'Data rate' }
     ]
   },
   {
-    category: 'Music',
+    category: 'Power & Safety',
     clues: [
-      { value: 100, q: 'Who is known as the King of Pop?', a: 'Michael Jackson' },
-      { value: 200, q: 'Which instrument has 88 keys?', a: 'Piano' },
-      { value: 300, q: 'Which band released the album "Abbey Road"?', a: 'The Beatles' },
-      { value: 400, q: 'What is the musical symbol for silence?', a: 'Rest' },
-      { value: 500, q: 'Who composed the "Fifth Symphony"?', a: 'Ludwig van Beethoven' }
+      { value: 100, q: 'Common 18650 battery type.', a: 'Lithium-ion' },
+      { value: 200, q: 'TP4056 variant supports this feature.', a: 'Overcharge/discharge protection' },
+      { value: 300, q: '7805 voltage regulator wastes excess voltage as this.', a: 'Heat' },
+      { value: 400, q: 'Sudden voltage drop triggers ESP32 to do this.', a: 'Brown-out reset' },
+      { value: 500, q: 'Li-ion cells get permanently damaged if below this voltage.', a: '2.7V–3.0V' }
+    ]
+  },
+  {
+    category: 'Disco Tech (Fun)',
+    clues: [
+      { value: 100, q: 'Individually addressable LED strip.', a: 'WS2812B / NeoPixel' },
+      { value: 200, q: 'Driving too many LEDs directly can cause this.', a: 'GPIO pin overcurrent damage' },
+      { value: 300, q: 'LED FPS is limited by this.', a: 'Data signal frequency (800 kHz)' },
+      { value: 400, q: 'FFT converts signal to this domain.', a: 'Frequency domain' },
+      { value: 500, q: 'Used in sound-reactive systems to avoid flicker.', a: 'Moving average' }
     ]
   }
 ]
