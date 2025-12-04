@@ -127,9 +127,10 @@ body::before {
 .used-label { font-size: 28px; color: #ffeedd; }
 
 /* shimmer on question modal */
-.modal { border: 2px solid rgba(255,255,255,0.08); background: linear-gradient(180deg, rgba(8,6,20,0.95), rgba(20,12,40,0.98)); color: #fff; }
-.question { color: #ffd7a6; font-size: 20px; }
-.answer { background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.04); }
+.modal { border: 2px solid rgba(255,255,255,0.08); background: linear-gradient(180deg, rgba(8,6,20,0.95), rgba(20,12,40,0.98)); color: #fff; padding: 24px; }
+.question { color: #ffd7a6; font-size: 20px; padding: 16px 0; }
+.answer { background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.04); padding: 16px; }
+.modal-buttons { margin-top: 16px; }
 
 /* teams disco look */
 .teams-section { background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04)); border: 1px solid rgba(255,255,255,0.03); }
@@ -152,4 +153,32 @@ body::before {
 @media (max-width: 900px) {
   .disco-title { font-size: 36px; }
   .team-box { width: 140px; }
+}
+
+/* Sticky logo in bottom right corner */
+.sticky-logo {
+  position: fixed !important;
+  bottom: -2vw !important;
+  right: 20px !important;
+  width: 300px;
+  height: auto;
+  z-index: 9999 !important;
+  opacity: 0.9;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  pointer-events: auto;
+}
+
+.sticky-logo:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+@media (max-width: 720px) {
+  .sticky-logo {
+    width: 80px !important;
+    bottom: 0px !important;
+    right: 10px !important;
+  }
 }

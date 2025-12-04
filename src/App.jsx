@@ -96,9 +96,6 @@ export default function App() {
 
   const [modal, setModal] = useState({ open: false, cat: null, row: null })
   const [showAnswer, setShowAnswer] = useState(false)
-  const [seconds, setSeconds] = useState(60)
-  const [timedOut, setTimedOut] = useState(false)
-  const timerRef = useRef(null)
   // Teams and setup state
   const [setupComplete, setSetupComplete] = useState(() => {
     try {
@@ -133,41 +130,9 @@ export default function App() {
 
   useEffect(() => {
     if (!modal.open) {
-      stopTimer()
       setShowAnswer(false)
-      setSeconds(60)
-      setTimedOut(false)
     }
   }, [modal.open])
-
-  useEffect(() => {
-    if (modal.open) startTimer()
-    return () => stopTimer()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modal.open])
-
-  function startTimer() {
-    stopTimer()
-    setSeconds(60)
-    setTimedOut(false)
-    timerRef.current = setInterval(() => {
-      setSeconds(s => {
-        if (s <= 1) {
-          clearInterval(timerRef.current)
-          setTimedOut(true)
-          return 0
-        }
-        return s - 1
-      })
-    }, 1000)
-  }
-
-  function stopTimer() {
-    if (timerRef.current) {
-      clearInterval(timerRef.current)
-      timerRef.current = null
-    }
-  }
 
   function tileKey(c, r) {
     return `c${c}r${r}`
@@ -182,7 +147,6 @@ export default function App() {
 
   function handleRevealAnswer() {
     setShowAnswer(true)
-    stopTimer()
   }
 
   function closeModal() {
@@ -221,10 +185,17 @@ export default function App() {
   }
 
   return (
-    <div className="app">
-  <h1 className="sixtyfour-disco disco-title">Disco Dome</h1>
-  {/* decorative second disco ball element (purely visual) */}
-  <div className="disco-ball" aria-hidden="true" />
+    <>
+      {/* Sticky logo in bottom right corner - outside app container */}
+      <img 
+        src="https://itsakarsh.tech/event/images/1761475408771_SATFinalLogoPNG.png" 
+        alt="SAT Logo" 
+        className="sticky-logo"
+      />
+      <div className="app">
+        <h1 className="sixtyfour-disco disco-title">Disco Dome</h1>
+        {/* decorative second disco ball element (purely visual) */}
+        <div className="disco-ball" aria-hidden="true" />
       <div className="board">
         <div className="header-row">
           {DATA.map((col, i) => (
@@ -299,16 +270,11 @@ export default function App() {
             <h3>{DATA[modal.cat].category} — ${DATA[modal.cat].clues[modal.row].value}</h3>
             <p className="question">{DATA[modal.cat].clues[modal.row].q}</p>
 
-            <div className="timer-row">
-              <div className={`timer ${timedOut ? 'timeout' : ''}`}>
-                Time: {seconds}s {timedOut ? '(Time up)' : ''}
-              </div>
-              <div className="modal-buttons">
-                {!showAnswer && (
-                  <button onClick={handleRevealAnswer} className="reveal">Reveal Answer</button>
-                )}
-                <button onClick={closeModal} className="close">Close</button>
-              </div>
+            <div className="modal-buttons">
+              {!showAnswer && (
+                <button onClick={handleRevealAnswer} className="reveal">Reveal Answer</button>
+              )}
+              <button onClick={closeModal} className="close">Close</button>
             </div>
 
             {showAnswer && (
@@ -319,6 +285,7 @@ export default function App() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   )
 }
